@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Movie Trivia Game</title>
+  <style>
+  html body{
+      font-family: serif;
+      background: green;
+  }
+  img {
+      width: 350px;
+      position: center;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 15px;
+  }
+  li{
+      padding: 5px;
+      list-style-type: none;
+      display: inline-block;
+  }
+  a{
+      text-decoration: none;
+      color: white;
+  } 
+  #container {
+      padding-top: 5px;
+      font-weight: bold;
+  }
+  h1 {
+      font-size: 40px;
+  }
+  h1, p{
+      padding: 25px;
+      text-align: center;
+  }
+  #main{
+      color: white;
+      border-style: solid;
+      border-width: 1px;
+      border-radius: 15px;
+      background-color: black;
+      padding: 20px;
+      width: 400px;
+      margin: auto;
+  }
+  #questions {
+      padding-bottom: 15px;
+  }
+  .title {
+      font-family: serif
+  }
+  #nextBtn, #backBtn, #submit {
+      font-family: serif;
+      display: inline-block;
+      color: gray;
+      background-color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 10px;
+      padding: 5px 15px;
+      border-radius: 5px;
+
+  }
+    </style>
+</head>
+<body>
+
+<div id="container">
+		<h1>Movie Trivia Gane</h1>
+			<p> 
+				Welcome to the Movie Trivia Game! Once you click the begin button below, you'll be asked to guess what movie  or movie character is being shown. Your score will be displayed once all the questions have been answered. Good Luck!
+			</p>
+
+		<div id="main">
+			<h3 id="questions" class="card"></h3>
+			<div><span id= "pokes"></span></div>
+			<div id="choices" class="card">
+				<input type="radio" name="choice" value = 0><span id="answer0"></span>
+				<br />
+				<input type="radio" name="choice" value = 1><span id="answer1"></span>
+				<br />
+				<input type="radio" name="choice" value = 2><span id="answer2"></span>
+				<br />
+				<input type="radio" name="choice" value = 3><span id="answer3"></span>
+			</div>
+			<div>
+			<br />
+				<button id="backBtn">Back</button>
+				<button id="nextBtn">Next</button>
+			</div>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script>
+    // timer for stopwatch
+    var timer = {
+	number: 31,
+	run: function () {
+		counter = setInterval(stopwatch.increment, 1000);
+	},
+	increment: function() {
+		stopwatch.number--;
+      	$('#show-number').html('<h2>' + timer.number + '</h2>');
+      	if (timer.number === 0){
+        	timer.stop();
+		}
+	},
+	stop: function() {
+		clearInterval(counter);
+	}
+};
+// variables for trivia questions
+var quizMovie = [ {
+		question: "Who's this character?",
+		picture: "assets/images/rocky.jpeg",
+		choices: ['Rambo','Rocky','Appollo','Drago'],
+		correct: 1,
+	},
+	{	question: "What movie is this?",
+		picture: 'assets/images/grease.jpeg',
+		choices: ['Hairspray','Newsies','Singing in the Rain','Grease'],
+		correct: 3,
+	},
+	{	question: "Who's this character?",
+		picture: 'assets/images/anakin.jpeg',
+		choices: ['Luke Skywalker','Obi Wan','Anakin Skywalker','Kylo Ren'],
+		correct: 2,
+	},
+	{	question: "What movie is this?",
+		picture: 'assets/images/fightclub.jpeg',
+		choices: ['Fight Club','Seven','Oceans 11','Troy'],
+		correct: 0,
+	},
+	{	question: "Who's this character?",
+		picture: 'assets/images/neo.jpeg',
+		choices: ['John Wick','Ted','Keanu','Neo'],
+		correct: 3,
+	},
+	{	question: "What movie is this?",
+		picture: 'assets/images/invincible.jpeg',
+		choices: ['Remember the Titans','Jerry Mgguire','Invincible','Friday Night Lights'],
+		correct: 2,
+	},
+	{	question: "Who's this character??",
+		picture: 'assets/images/iceman.jpeg',
+		choices: ['Maverick','Goose','Iceman','Striker'],
+		correct: 2,
+	},
+	{	question: "What movie is this?",
+		picture: 'assets/images/halloween.jpeg',
+		choices: ['Halloween','Friday The 13th','Scream','Nightmare on Elm street'],
+		correct: 0,
+	},
+	{	question: "Who's this character?",
+		picture: 'assets/images/batmanbeyond.jpeg',
+		choices: ['Batman','Spiderman','Joker','Batman Beyond'],
+		correct: 3,
+	},
+	{	question: "What movie is this?",
+		picture: 'assets/images/inception.jpeg',
+		choices: ['Inception','The Departed','The Revinant','Shutter Island'],
+		correct: 0,
+	},
+	{	question: "Who's this character?",
+		picture: 'assets/images/scar.jpeg',
+		choices: ['Mufasa','Scar','Simba','Nala'],
+		correct: 1,
+}];
+
+var numQuestions = quizMovie.length;
+var numCorrect = 0;
+var counter = 0;
+
+var moviePic = $('<img>');
+
+
+
+$('input[name="choice"]').hide;
+
+// display question function
+function nextQuest(){
+
+	$('#questions').text(quizMovie[counter].question);
+	moviePic.attr('src', quizMovie[counter].picture)
+	$('#pokes').append(moviePic)
+	$('#answer0').text(quizMovie[counter].choices[0]);
+	$('#answer1').text(quizMovie[counter].choices[1]);
+	$('#answer2').text(quizMovie[counter].choices[2]);
+	$('#answer3').text(quizMovie[counter].choices[3]);
+}
+
+
+// client-sided validation
+function validate() {
+	if ($('input').is(':checked')) {
+
+		nextQuest(); // display next question
+	}
+	else {
+		alert("Please make a selection.");
+		counter--;
+	}
+}
+
+// display first question
+nextQuest();
+
+
+// next button function
+$('#nextBtn').on('click', function() {
+	var answer = ($('input[name="choice"]:checked').val());
+
+	// increment score if answer is correct
+	if (answer == quizMovie[counter].correct) {
+		numCorrect++;
+	}
+
+	counter++;
+
+
+	// display score screen
+	if (counter >= numQuestions) {
+		$('#main').hide().fadeIn("slow");
+		document.getElementById('main').innerHTML="Quiz Complete! You scored " + numCorrect + " out of " + numQuestions + "!";
+		return; // returns false *(there has to be a better way! figure it out.)*
+	}
+
+	validate();
+
+	// fade in new question
+	$('.card').hide().fadeIn("slow");
+	
+	// clear previous selection
+	$('input[name="choice"]').prop('checked', false);
+});
+
+
+// back button function
+$('#backBtn').on('click', function() {
+	if (quizMovie[counter] == 0) {
+		$('.card').hide().fadeIn("slow");
+
+	} else {
+		// fade out current question and fade in previous question
+		$('.card').hide().fadeIn("slow");
+		numCorrect--;
+		counter--;
+	}
+
+	
+	
+	// display previous question
+	nextQuest();	
+});
+</script>
+
+
+</body>
+</html>
